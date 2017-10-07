@@ -1,0 +1,8 @@
+database:
+  host: localhost
+  dialect: sqlite
+  storage: development.db
+http:
+  port: 3000
+log:
+  "*": trace

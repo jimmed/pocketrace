@@ -1,0 +1,84 @@
+scalar DateTime
+
+interface Node {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Player implements Node {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  divisionRankings: [DivisionRanking!]!
+  matches: [Match!]!
+  rounds: [Round!]!
+  state: PlayerState!
+}
+
+type Division implements Node {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  order: Int!
+  matches: [Match!]!
+  name: String!
+  rankings: [DivisionRanking!]!
+  round: Round
+}
+
+type DivisionRanking implements Node {
+  division: Division
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  losses: Int!
+  points: Int!
+  player: Player
+  wins: Int!
+}
+
+type Match implements Node {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  division: Division
+  players: [Player!]!
+  state: MatchState!
+  completedAt: DateTime
+  loser: Player
+  winner: Player
+}
+
+enum MatchState {
+  Scheduled
+  Started
+  Finished
+  Cancelled
+}
+
+enum PlayerState {
+  NotJoined
+  Joining
+  Joined
+  Leaving
+}
+
+enum RoundState {
+  NotStarted
+  Started
+  Finished
+}
+
+type Round implements Node {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  divisions: [Division!]!
+  endDate: DateTime!
+  nextRound: Round
+  previousRound: Round!
+  startDate: DateTime!
+  state: RoundState!
+  players: [Player!]!
+}

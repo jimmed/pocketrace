@@ -8,18 +8,29 @@ const asModel = ({
     options,
     instanceMethods,
     staticMethods
-}) => db => {
-    const model = db.define(name, fields, options)
-    // TODO: Bind instance methods
-    bindInstanceMethods(model, instanceMethods)
-    // TODO: Bind static methods
-    bindStaticMethods(model, staticMethods)
-    return model
+}) => (db, models) => db.define(name, fields, options)
+
+const bindInstanceMethods = (models, modelMakers) => {
+    Object.entries(modelMakers).forEach(([name, maker]) => {
+        const model = models[name]
+        if (!maker.instanceMethods) return
+        const methods = maker.instanceMethods(models)
+        Object.entries(methods).forEach(([key, method]) => {
+            model.prototype[key] = method
+        })
+    })
 }
 
-const bindStaticMethods = (model, methods = {}) => Object.assign(model, methods)
-const bindInstanceMethods = (model, methods = {}) =>
-    Object.assign(model.prototype, methods)
+const bindStaticMethods = (models, modelMakers) => {
+    Object.entries(modelMakers).forEach(([name, maker]) => {
+        const model = models[name]
+        if (!maker.instanceMethods) return
+        const methods = maker.instanceMethods(models)
+        Object.entries(methods).forEach(([key, method]) => {
+            model[key] = method
+        })
+    })
+}
 
 const makeModels = (db, modelMakers) => {
     const models = Object.entries(
@@ -29,6 +40,8 @@ const makeModels = (db, modelMakers) => {
         return out
     }, {})
     relateModels(models)
+    bindInstanceMethods(models, modelMakers)
+    bindStaticMethods(models, modelMakers)
     return models
 }
 

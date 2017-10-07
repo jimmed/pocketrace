@@ -23,19 +23,19 @@ const playerModel = {
     relate: ({ Player, Divison, DivisionRanking }) => {
         Player.belongsToMany(Division, { through: DivisionRanking })
     },
-    staticMethods: {
-        async register({ name }, { Player }) {
+    staticMethods: ({ Player }) => ({
+        async register({ name }) {
             return await Player.create({ name })
         }
-    },
-    instanceMethods: {
-        async giveAdmin(_, { Player }) {
+    }),
+    instanceMethods: ({ Player }) => ({
+        async giveAdmin({ Player }) {
             return await this.update({ isAdmin: true })
         },
-        async removeAdmin(_, { Player }) {
+        async removeAdmin({ Player }) {
             return await this.update({ isAdmin: false })
         }
-    }
+    })
 }
 
 module.exports = asModel(playerModel)

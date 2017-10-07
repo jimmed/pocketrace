@@ -18,8 +18,10 @@ const dateTimeResolver = new GraphQLScalarType({
 const resolvers = {
     Query: {
         async getPlayers(obj, args, { models: { Player } }) {
-            const result = await Player.findAll()
-            return result
+            return await Player.findAll()
+        },
+        async getPlayerByID(obj, { id }, { models: { Player } }) {
+            return await Player.findById(id)
         }
     },
     DateTime: dateTimeResolver

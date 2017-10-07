@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize')
-const { asModel } = require('./utils')
+const { asModel, asStateMachine } = require('./utils')
 
 const playerModel = {
     name: 'player',
@@ -13,14 +13,28 @@ const playerModel = {
             allowNull: false,
             defaultValue: false
         },
-        state: {
-            type: DataTypes.ENUM('NotJoined', 'Joining', 'Joined', 'Leaving'),
-            allowNull: false,
-            defaultValue: 'NotJoined'
-        }
+        state: asStateMachine({
+            NotJoined: ['Joining'],
+            Joining: ['Joined', 'NotJoined'],
+            Joined: ['Leaving'],
+            Leaving: ['NotJoined']
+        })
     },
     relate: ({ Player, Divison, DivisionRanking }) => {
         Player.belongsToMany(Division, { through: DivisionRanking })
+    },
+    staticMethods: {
+        async register({ name }, { Player }) {
+            return await Player.create({ name })
+        }
+    },
+    instanceMethods: {
+        async giveAdmin(_, { Player }) {
+            return await this.update({ isAdmin: true })
+        },
+        async removeAdmin(_, { Player }) {
+            return await this.update({ isAdmin: false })
+        }
     }
 }
 

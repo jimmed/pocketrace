@@ -1,5 +1,5 @@
 const { DataTypes, NOW } = require('sequelize')
-const { asModel } = require('./utils')
+const { asModel, asStateMachine } = require('./utils')
 
 const roundModel = {
     name: 'round',
@@ -12,11 +12,11 @@ const roundModel = {
             type: DataTypes.DATEONLY,
             allowNull: false
         },
-        state: {
-            type: DataTypes.ENUM('NotStarted', 'Started', 'Finished'),
-            allowNull: false,
-            defaultValue: NOW
-        }
+        state: asStateMachine({
+            NotStarted: ['Started'],
+            Started: ['Finished'],
+            Finished: []
+        })
     },
     relate: ({ Round, Divison }) => {
         Round.hasOne(Round, { as: 'previousRound' })

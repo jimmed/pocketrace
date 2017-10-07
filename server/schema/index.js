@@ -10,6 +10,8 @@ const getSchema = async () => {
         await readFile(types, 'utf8'),
         `type Query {
             getPlayers: [Player]!
+            getPlayersByState(states: [PlayerState]!): [Player]!
+            getPlayerByID(id: ID!): Player
             getRounds: [Round]!
         }`
     ]

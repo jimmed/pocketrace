@@ -1,7 +1,13 @@
 database:
   host: localhost
-  dialect: sqlite
-  storage: development.db
+  dialect: postgres
+  database: pocketrace
+  username: pocketrace
+  password: craptesco
+  sync: true
+  pool:
+    max: 50
+    min: 5
 http:
   port: 3000
 log:

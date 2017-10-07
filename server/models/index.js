@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize')
 
-const setupModels = (db, { log }) => {
+const setupModels = async (db, { log }) => {
     log.trace('Setting up models...')
 
     const Player = db.define('player', {
@@ -44,14 +44,17 @@ const setupModels = (db, { log }) => {
     Match.hasOne(Match, { as: 'winner' })
     Match.hasOne(Match, { as: 'loser' })
 
+    log.trace('Syncing database schema...')
+    await db.sync()
     log.trace('Models set up!')
+
     return {
-        PlayerModel: Player,
-        RoundModel: Round,
-        DivisionModel: Division,
-        DivisionRankingModel: DivisionRanking,
-        MatchModel: Match,
-        MatchResultModel: MatchResult
+        Player,
+        Round,
+        Division,
+        DivisionRanking,
+        Match,
+        MatchResult
     }
 }
 

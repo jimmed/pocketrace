@@ -8,13 +8,13 @@ const log = createLogger('server')
 const setupServer = async config => {
     createLogger.enable(config.log || {})
     log.info('Starting up!')
-    const storage = await setupDatabase(config.database, {
+    const database = await setupDatabase(config.database, {
         log: log('database')
     })
-    const models = setupModels(storage, { log: log('models') })
+    const models = await setupModels(database, { log: log('models') })
     const http = await setupHttp(models, config.http, { log: log('http') })
     log.info('Server started!')
-    return { storage, models, http }
+    return { database, models, http }
 }
 
 if (module.parent) {

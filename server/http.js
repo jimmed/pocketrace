@@ -39,8 +39,12 @@ const setupHttp = async (models, { port = 3000 }, { log }) => {
     app.post(
         '/graphql',
         graphqlExpress((req, res) => {
+            const graphQLLogger = log('graphQL')
             const user = req.user
-            const context = createExpressContext({ models, user }, res)
+            const context = createExpressContext(
+                { models, user, log: graphQLLogger },
+                res
+            )
             return { schema, formatError, context }
         })
     )

@@ -25,7 +25,11 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "watch:server": "nodemon server",
+    "watch": "yarn run -s watch:server"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "nodemon": "^1.12.1"
+  }
 }

@@ -4,7 +4,16 @@ const { asModel } = require('./utils')
 const matchModel = {
     name: 'match',
     fields: {
-        state: DataTypes.ENUM('Scheduled', 'Started', 'Finished', 'Cancelled')
+        state: {
+            type: DataTypes.ENUM(
+                'Scheduled',
+                'Started',
+                'Finished',
+                'Cancelled'
+            ),
+            allowNull: false,
+            defaultValue: 'Scheduled'
+        }
     },
     relate: ({ Match }) => {
         Match.hasOne(Match, { as: 'winner' })

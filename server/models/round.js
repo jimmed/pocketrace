@@ -1,12 +1,22 @@
-const { DataTypes } = require('sequelize')
+const { DataTypes, NOW } = require('sequelize')
 const { asModel } = require('./utils')
 
 const roundModel = {
     name: 'round',
     fields: {
-        state: DataTypes.ENUM('NotStarted', 'Started', 'Finished'),
-        startDate: DataTypes.DATEONLY,
-        endDate: DataTypes.DATEONLY
+        startDate: {
+            type: DataTypes.DATEONLY,
+            allowNull: false
+        },
+        endDate: {
+            type: DataTypes.DATEONLY,
+            allowNull: false
+        },
+        state: {
+            type: DataTypes.ENUM('NotStarted', 'Started', 'Finished'),
+            allowNull: false,
+            defaultValue: NOW
+        }
     },
     relate: ({ Round, Divison }) => {
         Round.hasOne(Round, { as: 'previousRound' })

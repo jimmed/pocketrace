@@ -8,12 +8,14 @@ interface Node {
 
 type Player implements Node {
   id: ID!
+  name: String!
   createdAt: DateTime!
   updatedAt: DateTime!
   divisionRankings: [DivisionRanking!]!
   matches: [Match!]!
   rounds: [Round!]!
   state: PlayerState!
+  isAdmin: Boolean!
 }
 
 type Division implements Node {

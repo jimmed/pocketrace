@@ -4,10 +4,10 @@ const { asModel } = require('./utils')
 const divisionRankingModel = {
     name: 'divisionRanking',
     fields: {
-        points: DataTypes.INTEGER,
-        played: DataTypes.INTEGER,
-        wins: DataTypes.INTEGER,
-        losses: DataTypes.INTEGER
+        points: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 0 },
+        played: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 0 },
+        wins: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 0 },
+        losses: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 0 }
     }
 }
 

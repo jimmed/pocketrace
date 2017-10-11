@@ -20,20 +20,14 @@ const playerModel = {
             Leaving: ['NotJoined']
         })
     },
-    relate: ({ Player, Divison, DivisionRanking }) => {
+    relate: ({ Player, Division, DivisionRanking, Match }) => {
         Player.belongsToMany(Division, { through: DivisionRanking })
+        Player.hasMany(Match, { as: 'winner' })
+        Player.hasMany(Match, { as: 'loser' })
     },
     staticMethods: ({ Player }) => ({
         async register({ name }) {
             return await Player.create({ name })
-        }
-    }),
-    instanceMethods: ({ Player }) => ({
-        async giveAdmin({ Player }) {
-            return await this.update({ isAdmin: true })
-        },
-        async removeAdmin({ Player }) {
-            return await this.update({ isAdmin: false })
         }
     })
 }

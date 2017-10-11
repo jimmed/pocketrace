@@ -7,7 +7,12 @@ const divisionRankingModel = {
         points: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 0 },
         played: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 0 },
         wins: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 0 },
-        losses: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 0 }
+        losses: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 0 },
+        pocketDifference: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            defaultValue: 0
+        }
     }
 }
 

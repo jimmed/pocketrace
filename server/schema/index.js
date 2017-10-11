@@ -10,9 +10,14 @@ const getSchema = async () => {
         await readFile(types, 'utf8'),
         `type Query {
             getPlayers: [Player]!
-            getPlayersByState(states: [PlayerState]!): [Player]!
             getPlayerByID(id: ID!): Player
+            getPlayersByState(states: [PlayerState]!): [Player]!
             getRounds: [Round]!
+            getRoundByID(id: ID!): Round
+            getRoundsByState(states: [RoundState]!): [Round]!
+            getMatches: [Match]!
+            getMatchByID(id: ID!): Match
+            getMatchesByState(states: [MatchState]!): [Match]!
         }`
     ]
     return makeExecutableSchema({ typeDefs, resolvers })

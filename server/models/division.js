@@ -7,7 +7,7 @@ const divisionModel = {
         name: { type: DataTypes.STRING, allowNull: false },
         order: { type: DataTypes.INTEGER, allowNull: false }
     },
-    relate: ({ Divison, DivisionRanking, Match, Player }) => {
+    relate: ({ Division, DivisionRanking, Match, Player }) => {
         Division.belongsToMany(Player, { through: DivisionRanking })
         Division.hasMany(Match)
     }

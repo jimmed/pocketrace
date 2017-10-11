@@ -9,10 +9,7 @@ const matchModel = {
             Started: ['Finished', 'Cancelled']
         })
     },
-    relate: ({ Match, Player }) => {
-        Match.hasOne(Player, { as: 'winner' })
-        Match.hasOne(Player, { as: 'loser' })
-    }
+    relate: ({ Match, Player }) => {}
 }
 
 module.exports = asModel(matchModel)

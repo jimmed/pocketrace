@@ -1,14 +1,11 @@
 const { DataTypes } = require('sequelize')
 
 /* Model definition utilities */
-const asModel = ({
-    name,
-    fields = {},
-    relate,
-    options,
-    instanceMethods,
-    staticMethods
-}) => (db, models) => db.define(name, fields, options)
+const asModel = def => db => {
+    const model = db.define(def.name, def.fields, def.options)
+    model.__definition = def
+    return model
+}
 
 const bindInstanceMethods = (models, modelMakers) => {
     Object.entries(modelMakers).forEach(([name, maker]) => {
@@ -46,7 +43,9 @@ const makeModels = (db, modelMakers) => {
 }
 
 const relateModels = models =>
-    Object.values(models).forEach(({ relate = () => {} }) => relate(models))
+    Object.values(models).forEach(({ __definition: { relate = () => {} } }) =>
+        relate(models)
+    )
 
 /**
  * State management utilities
@@ -76,6 +75,9 @@ const asStateMachine = (states, options = {}) => {
                 throw new UnknownStateError(this, newState)
             }
             const oldState = this.getDataValue('state')
+            if (newState === oldState) {
+                return
+            }
             const allowedTransitions = states[oldState]
             if (!allowedTransitions.includes(newState)) {
                 throw new StateTransitionError(this, oldState, newState)
